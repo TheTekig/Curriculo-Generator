@@ -1,6 +1,6 @@
 import os
 import json
-import pdfkit
+import pydf
 import time
 from datetime import datetime
 
@@ -64,7 +64,14 @@ def curriculo_pdf(vCurriculos,nome):
 
     curriculo = vCurriculos[chave]
 
-    texto = f"<h1>Nome: {curriculo['nome']}</h1>"
+    texto = f"""<!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Currículo</title>
+                </head>
+                <body>"""
+    texto += f"<h1>Nome: {curriculo['nome']}</h1>"
     texto += f"<h2>Email: {curriculo['email']}</h2>"
     texto += f"<h2>Telefone: {curriculo['telefone']}</h2>"
     texto += f"<h2>Sobre</h2><p>{curriculo['sobre']}</p>"
@@ -78,12 +85,20 @@ def curriculo_pdf(vCurriculos,nome):
     texto += "<br>"
     print("Convertendo para pdf...")
     time.sleep(3)
-    os.makedirs("Curriculos-PDF", exist_ok=True)
-    caminho_arquivo = os.path.join("Curriculos-PDF", f"Curriculo-{curriculo['nome']}.pdf")
-    pdfkit.from_string(texto, caminho_arquivo)
-    print("Currículo gerado com sucesso!")
-    print("O arquivo foi salvo em:" + os.getcwd())
-    time.sleep(1)
+
+    try:
+        pdf = pydf.generate_pdf(texto)
+        os.makedirs("Curriculos-PDF", exist_ok=True)
+        caminho_arquivo = os.path.join("Curriculos-PDF", f"Curriculo-{curriculo['nome']}.pdf")
+        with open(caminho_arquivo, "wb") as f:
+            f.write(pdf, )    
+        print("Currículo gerado com sucesso!")
+        print("O arquivo foi salvo em:" + os.getcwd())
+        time.sleep(1)
+
+    except Exception as e:
+        print(f"Erro ao gerar Curriculo!{e}")
+        time.sleep(1)
 
 def procurar_curriculo(vCurriculos,nome):
     if nome in vCurriculos:
@@ -168,7 +183,7 @@ def validar_nome_busca():
         else:
             print("O nome deve conter apenas letras.")
 
-def validar_email(vCurriculos):
+def validar_email():
     while True:
         email = input("Digite o email: ")
         if "@" in email and "." in email:
@@ -176,7 +191,7 @@ def validar_email(vCurriculos):
         else:
             print("O email deve conter '@' e '.'.")
 
-def validar_telefone(vCurriculos):
+def validar_telefone():
     while True:
         telefone = input("Digite o telefone: ").strip()
         if telefone.isdigit() and len(telefone) == 11:
@@ -195,7 +210,7 @@ def validar_data():
                 print("Data inválida. A data não pode ser no futuro.")
 
             else:
-                return data_nascimento
+                return str(data_nascimento)
 
         except ValueError:
             print("Data inválida. Use o formato DD/MM/AAAA.")
@@ -206,7 +221,9 @@ def validar_data():
 
 #region /Finções de Menu/
 def menu():
-    print("Sistema de Currículos")
+    print("=" * 30)
+    print("    Sistema de Currículos")
+    print("=" * 30)
     print("1. Preencher Currículo")
     print("2. Listar Currículos")
     print("3. Procurar Currículos")
@@ -224,13 +241,13 @@ def main():
     vCurriculos = load("curriculos.json")
 
     while True:
-        print("\n", "=" * 30)
+        print("\n")
         menu()
         print("=" * 30)
         opcao = opcoes()
 
         if opcao == "1":
-            print("\n\t-=-Cadastro de Curriculo-=-")
+            print("\n  -=-Cadastro de Curriculo-=-")
             print("=" * 30)
             nome = validar_nome(vCurriculos)
             preencher_curriculo(vCurriculos, nome)
@@ -239,7 +256,7 @@ def main():
             continue
 
         if opcao == "2":
-            print("\n\t-=-Lista de Currículos-=-")
+            print("\n  -=-Lista de Currículos-=-")
             print("=" * 30)
             listar_curriculos(vCurriculos)
             print("=" * 30)
@@ -247,7 +264,7 @@ def main():
             continue
 
         if opcao == "3":
-            print("\n\t-=-Procurar Currículo-=-")
+            print("\n  -=-Procurar Currículo-=-")
             print("=" * 30)
             nome = validar_nome_busca()
             codigo = procurar_curriculo(vCurriculos,nome)
@@ -271,7 +288,7 @@ def main():
             continue
 
         if opcao == "4":
-            print("\n\t-=-Atualizar Currículo-=-")
+            print("\n  -=-Atualizar Currículo-=-")
             print("=" * 30)
             nome = validar_nome_busca()
             atualizar_curriculo(vCurriculos,nome)
