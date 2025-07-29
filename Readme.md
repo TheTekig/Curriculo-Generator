@@ -44,7 +44,11 @@ Download para Windows/Linux/macOS
         python main.py
         Use o menu para cadastrar, buscar ou exportar currículos.
 
+<<<<<<< HEAD
 #📁 Estrutura de pastas
+=======
+📁 Estrutura de pastas
+>>>>>>> eb7774e28e8b84a159131348c3c94af47080fd61
 
         GERADORCURRICULOS/
         ├── Backup-Curriculos/       # Currículos salvos em formato JSON
