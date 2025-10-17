@@ -112,4 +112,4 @@ Sistema multiusuário com autenticação
 
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TheTekig) Diogo Teodoro Dias Lamas
 
-<p align="center"> Feito com ❤️ em Python &nbsp;|&nbsp; <b>#SoftwareEngineering</b> 🧠 </p> 
+<p align="center"> Feito em Python &nbsp;|&nbsp; <b>#SoftwareEngineering</b> 🧠 </p> 
