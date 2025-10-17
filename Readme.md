@@ -11,7 +11,6 @@
   <img src="https://img.shields.io/badge/PyDF-FFD43B?style=for-the-badge&logo=adobeacrobatreader&logoColor=black"/>
   <img src="https://img.shields.io/badge/CLI%20Application-2E3440?style=for-the-badge&logo=gnu-bash&logoColor=white"/>
   <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge"/>
 </p>
 
 ---
