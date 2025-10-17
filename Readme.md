@@ -67,14 +67,18 @@ python main.py
 
 4️⃣ Utilize o menu interativo:
 
- <p align="center">================================
-        Sistema de Currículos
-    ================================
-    1. Preencher Currículo
-    2. Listar Currículos
-    3. Procurar Currículo
-    4. Atualizar Currículo
-    5. Sair </p>
+ <p align="center">
+   
+      ================================
+          Sistema de Currículos
+      ================================
+      1. Preencher Currículo
+      2. Listar Currículos
+      3. Procurar Currículo
+      4. Atualizar Currículo
+      5. Sair 
+      
+ </p>
    
 5️⃣ Escolha “Procurar Currículo” para gerar um PDF personalizado automaticamente 🧾
 
