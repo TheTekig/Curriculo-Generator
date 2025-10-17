@@ -67,14 +67,14 @@ python main.py
 
 4️⃣ Utilize o menu interativo:
 
-    ================================
+ <p align="center">================================
         Sistema de Currículos
     ================================
     1. Preencher Currículo
     2. Listar Currículos
     3. Procurar Currículo
     4. Atualizar Currículo
-    5. Sair
+    5. Sair </p>
    
 5️⃣ Escolha “Procurar Currículo” para gerar um PDF personalizado automaticamente 🧾
 
@@ -105,7 +105,7 @@ Sistema multiusuário com autenticação
 ---
 
 ## 👨‍💻 Autor
-Diogo Teodoro Dias Lamas
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TheTekig)
 
-<p align="center"> Feito com ❤️ em Python &nbsp;|&nbsp; <b>#SoftwareEngineering</b> 🧠 </p> ```
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TheTekig) Diogo Teodoro Dias Lamas
+
+<p align="center"> Feito com ❤️ em Python &nbsp;|&nbsp; <b>#SoftwareEngineering</b> 🧠 </p> 
