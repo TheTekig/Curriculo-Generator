@@ -1,0 +1,42 @@
+{
+    "Lucas Andrade Ferreira": {
+        "nome": "Lucas Andrade Ferreira",
+        "email": "lucas.andrade.dev@gmail.com",
+        "telefone": "(11) 98845-3221",
+        "experiencias": [
+            {
+                "empresa": "TechVision Solu\u00e7\u00f5es Digitais",
+                "cargo": "Desenvolvedor Backend J\u00fanior",
+                "data_inicio": "2023-03-31"
+            },
+            {
+                "empresa": "SoftLink Tecnologia",
+                "cargo": "Estagi\u00e1rio em Desenvolvimento Web",
+                "data_inicio": "2022-08-22"
+            },
+            {
+                "empresa": "Cria\u00e7\u00e3o de interfaces responsivas com HTML, CSS e JavaScript. Apoio na manuten\u00e7\u00e3o de sites institucionais e refatora\u00e7\u00e3o de c\u00f3digo legado.",
+                "cargo": "Estagio",
+                "data_inicio": "2025-02-21"
+            }
+        ],
+        "sobre": "Sou um desenvolvedor de software com foco em solu\u00e7\u00f5es web e automa\u00e7\u00e3o. Tenho interesse em tecnologias modernas, aprendizado cont\u00ednuo e trabalho em equipe. Busco oportunidades para crescer profissionalmente e contribuir com projetos inovadores.\",",
+        "formacao": [
+            {
+                "curso": "Bacharelado em Sistemas de Informa\u00e7\u00e3o",
+                "instituicao": "Universidade Federal do Esp\u00edrito Santo",
+                "ano_conclusao": "2025-01-31"
+            }
+        ],
+        "habilidades": [
+            "python",
+            "Django",
+            "Flask",
+            "Git e Github",
+            "Javascript",
+            "HTML/CSS",
+            "Banco de Dados",
+            "Ingles e Portugues"
+        ]
+    }
+}
