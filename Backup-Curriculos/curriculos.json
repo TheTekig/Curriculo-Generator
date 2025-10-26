@@ -13,11 +13,6 @@
                 "empresa": "SoftLink Tecnologia",
                 "cargo": "Estagi\u00e1rio em Desenvolvimento Web",
                 "data_inicio": "2022-08-22"
-            },
-            {
-                "empresa": "Cria\u00e7\u00e3o de interfaces responsivas com HTML, CSS e JavaScript. Apoio na manuten\u00e7\u00e3o de sites institucionais e refatora\u00e7\u00e3o de c\u00f3digo legado.",
-                "cargo": "Estagio",
-                "data_inicio": "2025-02-21"
             }
         ],
         "sobre": "Sou um desenvolvedor de software com foco em solu\u00e7\u00f5es web e automa\u00e7\u00e3o. Tenho interesse em tecnologias modernas, aprendizado cont\u00ednuo e trabalho em equipe. Busco oportunidades para crescer profissionalmente e contribuir com projetos inovadores.\",",
@@ -37,6 +32,43 @@
             "HTML/CSS",
             "Banco de Dados",
             "Ingles e Portugues"
+        ]
+    },
+    "Mariana Lopes da Silva": {
+        "nome": "Mariana Lopes da Silva",
+        "email": "mariana.lopes.dev@gmail.com",
+        "telefone": "(21) 97422-5680",
+        "experiencias": [
+            {
+                "empresa": "NextCode Solutions",
+                "cargo": "Desenvolvedora Fullstack J\u00fanior",
+                "data_inicio": "2024-01-31",
+                "data_fim": "2025-01-31",
+                "descricao": "Desenvolvimento de aplica\u00e7\u00f5es web usando React e Node.js. Cria\u00e7\u00e3o de APIs REST, integra\u00e7\u00e3o com bancos de dados MongoDB e PostgreSQL e automa\u00e7\u00e3o de testes com Jest."
+            },
+            {
+                "empresa": "Digital Wave Studio",
+                "cargo": "Estagi\u00e1ria em Desenvolvimento Front-end",
+                "data_inicio": "2022-08-01",
+                "data_fim": "2023-08-01",
+                "descricao": "Desenvolvimento de interfaces responsivas com HTML, CSS, JavaScript e React. Participa\u00e7\u00e3o em projetos de design e melhoria de experi\u00eancia do usu\u00e1rio."
+            }
+        ],
+        "sobre": "Desenvolvedora fullstack apaixonada por tecnologia e aprendizado cont\u00ednuo. Tenho experi\u00eancia com desenvolvimento web, design de interfaces e integra\u00e7\u00e3o entre sistemas. Busco oportunidades para atuar em equipes colaborativas e contribuir com solu\u00e7\u00f5es escal\u00e1veis.",
+        "formacao": [
+            {
+                "curso": "Tecnologia em An\u00e1lise e Desenvolvimento de Sistemas",
+                "instituicao": "Instituto Federal do Rio de Janeiro",
+                "ano_fim": 2025
+            }
+        ],
+        "habilidades": [
+            "Javascript",
+            "React.js",
+            "Vue.ja",
+            "TypeScript",
+            "Node.js",
+            "MongoDB"
         ]
     }
 }

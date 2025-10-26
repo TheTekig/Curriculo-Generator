@@ -38,7 +38,7 @@ def preencher_curriculo(vCurriculos, nome):
 
     telefone = validar_telefone()
 
-    sobre = input(colored("Digite uma breve descrição sobre você: ", "cyan", attrs=['bold']))
+    sobre = input(colored("Digite uma breve descrição sobre você: ", "light_red", attrs=['bold']))
 
     os.system('cls' if os.name == 'nt' else 'clear')
     print(colored("Preencimento de Curriculo - Experiencia Profissional", "magenta", attrs=['bold']).center(90))
@@ -46,15 +46,16 @@ def preencher_curriculo(vCurriculos, nome):
     experiencias = []
 
     while True:
-        empresa = input(colored("\nDigite o nome da empresa (""/toleave): ", "blue", attrs=['bold']))
+        empresa = input(colored("\nDigite o nome da empresa (""/toleave): ", "light_red", attrs=['bold']))
 
         if empresa.strip() != "":
-            cargos = input(colored("Digite o cargo na empresa: ", "cyan", attrs=['bold']))
+            cargos = input(colored("Digite o cargo na empresa: ", "light_red", attrs=['bold']))
             print(colored("Digite a data de início da experiência:", "yellow", attrs=['bold']))
             data_inicio = validar_data()
             print(colored("Digite a data de término da experiência (ou deixe em branco se ainda estiver trabalhando lá):", "yellow", attrs=['bold']))
             data_saida = validar_data()
-            experiencias.append({"empresa": empresa, "cargo": cargos, "data_inicio": data_inicio})
+            descricao = input(colored("Descreva suas responsabilidades e conquistas nessa empresa: ", "light_red", attrs=['bold']))
+            experiencias.append({"empresa": empresa, "cargo": cargos, "data_inicio": data_inicio, "data_fim": data_saida, "descricao": descricao})
 
         else:
             break
@@ -64,17 +65,17 @@ def preencher_curriculo(vCurriculos, nome):
 
     formacao = []
     while True:
-        curso = input(colored("\nDigite sua formacao ou curso realizado: ", "blue", attrs=['bold']))
+        curso = input(colored("\nDigite sua formacao ou curso realizado: ", "light_red", attrs=['bold']))
         if curso.strip() != "":
 
-            instituicao = input(colored("Digite a instituição onde realizou o curso: ", "cyan", attrs=['bold']))
+            instituicao = input(colored("Digite a instituição onde realizou o curso: ", "light_red", attrs=['bold']))
 
             try:
-                ano_conclusao = validar_data()
+                ano_conclusao = int(input(colored("Digite o ano de conclusão do curso (ou deixe em branco se ainda estiver cursando): ", "light_red", attrs=['bold'])))
             except ValueError:
                 ano_conclusao = ""
 
-            formacao.append({"curso": curso, "instituicao": instituicao, "ano_conclusao": ano_conclusao})
+            formacao.append({"curso": curso, "instituicao": instituicao, "ano_fim": ano_conclusao})
 
         
         else:
@@ -85,12 +86,12 @@ def preencher_curriculo(vCurriculos, nome):
 
     habilidades = []
     while True:
-        habilidades = input(colored("Digite suas habilidades (separadas por vírgula): ", "cyan", attrs=['bold']))
+        habilidades = input(colored("Digite suas habilidades (separadas por vírgula): ", "light_red", attrs=['bold']))
         if habilidades.strip() != "":
             habilidades = [habilidade.strip() for habilidade in habilidades.split(",")]
             break
         else:
-            print("As habilidades não podem estar vazias.")
+            print(colored("As habilidades não podem estar vazias.", "red"))
 
     vCurriculos[nome] = {
 
@@ -347,7 +348,7 @@ def validar_data():
 
 #endregion
 
-#region /Finções de Menu/
+#region /Funções de Menu/
 def menu():
    
     print(colored("Sistema de Currículos\n", "magenta", "on_black", attrs=['bold']).center(110))

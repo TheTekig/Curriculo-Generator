@@ -8,14 +8,14 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white"/>
-  <img src="https://img.shields.io/badge/PyDF-FFD43B?style=for-the-badge&logo=adobeacrobatreader&logoColor=black"/>
+  <img src="https://img.shields.io/badge/Pdfkit-FFD43B?style=for-the-badge&logo=adobeacrobatreader&logoColor=black"/>
   <img src="https://img.shields.io/badge/CLI%20Application-2E3440?style=for-the-badge&logo=gnu-bash&logoColor=white"/>
   <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge"/>
 </p>
 
 ---
 
-## 📘 Descrição
+<h2 align="center">📘 Descrição</h2>
 
 O **Gerador de Currículos** é um sistema de console desenvolvido em **Python** que permite ao usuário **criar, visualizar, editar e exportar currículos em formato PDF**.  
 Os dados são salvos automaticamente em arquivos **JSON**, garantindo persistência entre sessões.  
@@ -23,14 +23,16 @@ O PDF é gerado com **HTML dinâmico**, utilizando a biblioteca `pydf`.
 
 ---
 
-## ⚙️ Funcionalidades Principais
+<h2 align="center"> ⚙️ Funcionalidades Principais </h2>
 
-- 🧾 Criar currículos com nome, e-mail, telefone e experiências profissionais  
-- 💾 Salvar automaticamente os dados em JSON  
-- 🔍 Buscar, listar e atualizar currículos existentes  
-- 📄 Gerar arquivos PDF personalizados  
-- ✅ Validação de entradas (nome, e-mail, telefone, datas)  
-- 🧠 Organização modular e fácil manutenção  
+<p align="center">
+<p>🧾 Criar currículos com nome, e-mail, telefone e experiências profissionais  
+<p>💾 Salvar automaticamente os dados em JSON  
+<p> 🔍 Buscar, listar e atualizar currículos existentes  
+<p> 📄 Gerar arquivos PDF personalizados  
+<p>✅ Validação de entradas (nome, e-mail, telefone, datas)  
+<p> 🧠 Organização modular e fácil manutenção  
+</p>
 
 ---
 
@@ -40,7 +42,8 @@ O PDF é gerado com **HTML dinâmico**, utilizando a biblioteca `pydf`.
 |-------------|--------|
 | 🐍 **Python 3** | Linguagem principal |
 | 🧩 **JSON** | Armazenamento e persistência de dados |
-| 📄 **PyDF** | Conversão de HTML para PDF |
+| 📄 **Pdfkit** | Conversão de HTML para PDF |
+| 🎨 **Termcolor** | Melhor visualização do terminal |
 | 🕓 **Datetime / OS / Time** | Manipulação de arquivos e datas |
 
 ---
@@ -51,12 +54,23 @@ O PDF é gerado com **HTML dinâmico**, utilizando a biblioteca `pydf`.
     ┣ 📜 main.py # Código principal
     ┣ 📂 Backup-Curriculos/ # JSON com currículos salvos
     ┣ 📂 Curriculos-PDF/ # PDFs gerados automaticamente
+    ┣ 📂 img/ # Imagens do projeto
     ┗ 📜 README.md
 
 
 ---
 
-## 🚀 Como Executar
+## 📷 Fotos do Projeto
+
+<p align= "center">
+<img  src= ".\img\Curriculogif.gif" />
+<img  src= ".\img\Curriculorollgif.gif" />
+<img  src= ".\img\listgif.gif" />
+</p>
+
+---
+
+<h2 align= "center"> 🚀 Como Executar </h2>
 
 1️⃣ Certifique-se de ter o **Python 3** instalado  
 
