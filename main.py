@@ -1,8 +1,9 @@
 import os
 import json
-import pydf
+import pdfkit
 import time
 from datetime import datetime
+from termcolor import colored
 
 #region /salvamento/
 def save(nome_arquivo, dados):
@@ -32,17 +33,64 @@ def load(nome_arquivo):
 
 #region /Funções do Programa/
 def preencher_curriculo(vCurriculos, nome):
+
     email = validar_email()
+
     telefone = validar_telefone()
-    sobre = input("Digite uma breve descrição sobre você: ")
+
+    sobre = input(colored("Digite uma breve descrição sobre você: ", "cyan", attrs=['bold']))
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(colored("Preencimento de Curriculo - Experiencia Profissional", "magenta", attrs=['bold']).center(90))
+
     experiencias = []
+
     while True:
-        empresa = input("Digite o nome da empresa (ou 'sair' para encerrar): ")
-        if empresa.lower() == 'sair':
+        empresa = input(colored("\nDigite o nome da empresa (""/toleave): ", "blue", attrs=['bold']))
+
+        if empresa.strip() != "":
+            cargos = input(colored("Digite o cargo na empresa: ", "cyan", attrs=['bold']))
+            print(colored("Digite a data de início da experiência:", "yellow", attrs=['bold']))
+            data_inicio = validar_data()
+            print(colored("Digite a data de término da experiência (ou deixe em branco se ainda estiver trabalhando lá):", "yellow", attrs=['bold']))
+            data_saida = validar_data()
+            experiencias.append({"empresa": empresa, "cargo": cargos, "data_inicio": data_inicio})
+
+        else:
             break
-        cargos = input("Digite o cargo na empresa: ")
-        data_inicio = validar_data()
-        experiencias.append({"empresa": empresa, "cargo": cargos, "data_inicio": data_inicio})
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(colored("Preencimento de Curriculo - Cursos e Formações", "magenta", attrs=['bold']).center(90))
+
+    formacao = []
+    while True:
+        curso = input(colored("\nDigite sua formacao ou curso realizado: ", "blue", attrs=['bold']))
+        if curso.strip() != "":
+
+            instituicao = input(colored("Digite a instituição onde realizou o curso: ", "cyan", attrs=['bold']))
+
+            try:
+                ano_conclusao = validar_data()
+            except ValueError:
+                ano_conclusao = ""
+
+            formacao.append({"curso": curso, "instituicao": instituicao, "ano_conclusao": ano_conclusao})
+
+        
+        else:
+            break
+
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(colored("Preencimento de Curriculo - Habilidades", "magenta", attrs=['bold']).center(90))
+
+    habilidades = []
+    while True:
+        habilidades = input(colored("Digite suas habilidades (separadas por vírgula): ", "cyan", attrs=['bold']))
+        if habilidades.strip() != "":
+            habilidades = [habilidade.strip() for habilidade in habilidades.split(",")]
+            break
+        else:
+            print("As habilidades não podem estar vazias.")
 
     vCurriculos[nome] = {
 
@@ -51,10 +99,14 @@ def preencher_curriculo(vCurriculos, nome):
         "telefone": telefone,
         "experiencias": experiencias,
 
-        "sobre": sobre
+        "sobre": sobre,
+        "formacao": formacao,
+        "habilidades": habilidades
     }
 
     save("curriculos.json", vCurriculos)
+    print(colored("Currículo preenchido com sucesso!", "green"))
+    time.sleep(1)
 
 def curriculo_pdf(vCurriculos,nome):
     chave = procurar_curriculo(vCurriculos,nome)
@@ -64,41 +116,114 @@ def curriculo_pdf(vCurriculos,nome):
 
     curriculo = vCurriculos[chave]
 
+#region HTML Template
+
     texto = f"""<!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Currículo</title>
-                </head>
-                <body>"""
-    texto += f"<h1>Nome: {curriculo['nome']}</h1>"
-    texto += f"<h2>Email: {curriculo['email']}</h2>"
-    texto += f"<h2>Telefone: {curriculo['telefone']}</h2>"
-    texto += f"<h2>Sobre</h2><p>{curriculo['sobre']}</p>"
-    texto += "<h2>Experiências Profissionais</h2>"
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Currículo - {curriculo['nome']}</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f9;
+            color: #333;
+        }}
+        h1 {{
+            color: #2c3e50;
+            border-bottom: 3px solid #2980b9;
+            padding-bottom: 5px;
+        }}
+        h2 {{
+            color: #2980b9;
+            margin-top: 30px;
+        }}
+        p {{
+            margin: 5px 0;
+        }}
+        .section {{
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }}
+        .experiencia {{
+            margin-bottom: 15px;
+        }}
+        .skills, .formacao {{
+            list-style: none;
+            padding: 0;
+        }}
+        .skills li, .formacao li {{
+            background: #eaf2f8;
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+        }}
+    </style>
+</head>
+<body>
+    <h1>{curriculo['nome']}</h1>
+    <h3>{curriculo['email']} | {curriculo['telefone']}</h3>
 
-    for experiencia in curriculo['experiencias']:
-        texto += f"<p>Empresa: {experiencia['empresa']}</p>"
-        texto += f"<p>Cargo: {experiencia['cargo']}</p>"
-        texto += f"<p>Data de Início: {experiencia['data_inicio']}</p>"
+    <div class="section">
+        <h2>Sobre</h2>
+        <p>{curriculo['sobre']}</p>
+    </div>
 
-    texto += "<br>"
+    <div class="section">
+        <h2>Experiências Profissionais</h2>"""
+
+    for exp in curriculo['experiencias']:
+        texto += f"""
+        <div class="experiencia">
+            <p><strong>Empresa:</strong> {exp['empresa']}</p>
+            <p><strong>Cargo:</strong> {exp['cargo']}</p>
+            <p><strong>Período:</strong> {exp['data_inicio']} - {exp.get('data_fim', 'Atual')}</p>
+            <p><strong>Descrição:</strong> {exp.get('descricao', '—')}</p>
+        </div>"""
+
+    texto += """
+    </div>
+    <div class="section">
+        <h2>Formação Acadêmica</h2>
+        <ul class="formacao">"""
+    for curso in curriculo.get('formacao', []):
+        texto += f"<li>{curso['curso']} - {curso['instituicao']} ({curso.get('ano_fim', 'Cursando')})</li>"
+    texto += """</ul>
+    </div>
+    <div class="section">
+        <h2>Habilidades</h2>
+        <ul class="skills">"""
+    for skill in curriculo.get('habilidades', []):
+        texto += f"<li>{skill}</li>"
+    texto += """</ul>
+    </div>
+</body>
+</html>"""
+
+#endregion
+#region PDF Generation
+    
     print("Convertendo para pdf...")
     time.sleep(3)
-
     try:
-        pdf = pydf.generate_pdf(texto)
         os.makedirs("Curriculos-PDF", exist_ok=True)
         caminho_arquivo = os.path.join("Curriculos-PDF", f"Curriculo-{curriculo['nome']}.pdf")
-        with open(caminho_arquivo, "wb") as f:
-            f.write(pdf, )    
-        print("Currículo gerado com sucesso!")
-        print("O arquivo foi salvo em:" + os.getcwd())
+        config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+        pdfkit.from_string(texto, caminho_arquivo, configuration=config)
+
+        print(colored("Currículo gerado com sucesso!", "green"))
+        print(colored("O arquivo foi salvo em:" + os.getcwd(), "yellow"))
         time.sleep(1)
 
     except Exception as e:
-        print(f"Erro ao gerar Curriculo!{e}")
+        print(colored(f"Erro ao gerar Curriculo!{e}", "red"))
         time.sleep(1)
+
+#endregion
 
 def procurar_curriculo(vCurriculos,nome):
     if nome in vCurriculos:
@@ -109,34 +234,34 @@ def procurar_curriculo(vCurriculos,nome):
 def atualizar_curriculo(vCurriculos,nome):
     chave = procurar_curriculo(vCurriculos,nome)
     if chave == -1:
-        print("Currículo não encontrado.")
+        print(colored("Currículo não encontrado.", "red"))
         return 0;
     else:
-        print("Currículo encontrado.")
+        print(colored("Currículo encontrado.", "green"))
         print("Você deseja alterar:\n\t 1 - Nome\n\t 2 - Email\n\t 3 - Telefone\n\t 4 - Sobre\n\t 5 - Experiência")
         opcao = opcoes()
 
         if opcao == "1":
             vCurriculos[chave]["nome"] = validar_nome(vCurriculos)
-            print("Nome alterado com sucesso!")
+            print(colored("Nome alterado com sucesso!", "green"))
             save("curriculos.json", vCurriculos)
             time.sleep(1)
 
         if opcao == "2":
             vCurriculos[chave]["email"] = validar_email(vCurriculos)
-            print("Email alterado com sucesso!")
+            print(colored("Email alterado com sucesso!", "green"))
             save("curriculos.json", vCurriculos)
             time.sleep(1)
 
         if opcao == "3":
             vCurriculos[chave]["telefone"] = validar_telefone(vCurriculos)
-            print("Telefone alterado com sucesso!")
+            print(colored("Telefone alterado com sucesso!", "green"))
             save("curriculos.json", vCurriculos)
             time.sleep(1)
 
         if opcao == "4":
-            vCurriculos[chave]["sobre"] = input("Digite uma breve descrição sobre você: ")
-            print("Sobre alterado com sucesso!")
+            vCurriculos[chave]["sobre"] = input(colored("Digite uma breve descrição sobre você: ", "light_red", attrs=['bold']))
+            print(colored("Sobre alterado com sucesso!", "green"))
             save("curriculos.json", vCurriculos)
             time.sleep(1)
 
@@ -144,10 +269,10 @@ def atualizar_curriculo(vCurriculos,nome):
         if opcao == "5":
             experiencias = []
             while True:
-                empresa = input("Digite o nome da empresa (ou 'sair' para encerrar): ")
+                empresa = input(colored("Digite o nome da empresa (ou 'sair' para encerrar): ", "light_red", attrs=['bold']))
                 if empresa.lower() == 'sair':
                     break
-                cargos = input("Digite o cargo na empresa: ")
+                cargos = input(colored("Digite o cargo na empresa: ", "light_red", attrs=['bold']))
                 data_inicio = validar_data()
                 experiencias.append({"empresa": empresa, "cargo": cargos, "data_inicio": data_inicio})
 
@@ -160,60 +285,63 @@ def atualizar_curriculo(vCurriculos,nome):
 
 def listar_curriculos(vCurriculos):
     for nome, curriculo in vCurriculos.items():
-        print(f"Nome: {curriculo['nome']}")
+        print(colored("Nome: ", "magenta"), colored(f"{curriculo['nome']}", "cyan", attrs=['bold']))
+
+    input(colored("\nPressione Enter para continuar...", "yellow"))
+
 #endregion
 
 #region  /Validações/
 
 def validar_nome(vCurriculos):
     while True:
-        nome = input("Digite o nome completo: ")
+        nome = input(colored("Digite o nome completo: ", "light_red", attrs=['bold']))
         if nome.replace(" ", "").isalpha() and nome not in vCurriculos:
             return nome
         else:
             if nome in vCurriculos:
-                print("Nome já existe.")
-            print("O nome deve conter apenas letras.")
+                print(colored("Nome já existe.", "red"))
+            print(colored("O nome deve conter apenas letras.", "red"))
 
 def validar_nome_busca():
     while True:
-        nome = input("Digite o nome completo: ")
+        nome = input(colored("Digite o nome completo: ", "light_red", attrs=['bold']))
         if nome.replace(" ", "").isalpha():
             return nome
         else:
-            print("O nome deve conter apenas letras.")
+            print(colored("O nome deve conter apenas letras.", "red"))
 
 def validar_email():
     while True:
-        email = input("Digite o email: ")
+        email = input(colored("Digite o email: ", "light_red", attrs=['bold']))
         if "@" in email and "." in email:
             return email
         else:
-            print("O email deve conter '@' e '.'.")
+            print(colored("O email deve conter '@' e '.'.", "red"))
 
 def validar_telefone():
     while True:
-        telefone = input("Digite o telefone: ").strip()
+        telefone = input(colored("Digite o telefone: ", "light_red", attrs=['bold'])).strip()
         if telefone.isdigit() and len(telefone) == 11:
             telefone = f"({telefone[:2]}) {telefone[2:7]}-{telefone[7:]}"
             return telefone
         else:
-            print("O telefone deve conter apenas números.")
+            print(colored("O telefone deve conter apenas números.", "red"))
 
 def validar_data():
     while True:
-        data = input("Digite a data (DD/MM/AAAA): ")
+        data = input(colored("Digite a data (DD/MM/AAAA): ", "light_red", attrs=['bold']))
         try:
             hoje = datetime.now().date()
             data_nascimento = datetime.strptime(data, "%d/%m/%Y").date()
             if data_nascimento > hoje:
-                print("Data inválida. A data não pode ser no futuro.")
+                print(colored("Data inválida. A data não pode ser no futuro.", "red"))
 
             else:
                 return str(data_nascimento)
 
         except ValueError:
-            print("Data inválida. Use o formato DD/MM/AAAA.")
+            print(colored("Data inválida. Use o formato DD/MM/AAAA.", "red"))
 
 
 
@@ -221,18 +349,19 @@ def validar_data():
 
 #region /Finções de Menu/
 def menu():
-    print("=" * 30)
-    print("    Sistema de Currículos")
-    print("=" * 30)
-    print("1. Preencher Currículo")
-    print("2. Listar Currículos")
-    print("3. Procurar Currículos")
-    print("4. Atualizar Currículos")
-    print("5. Sair")
+   
+    print(colored("Sistema de Currículos\n", "magenta", "on_black", attrs=['bold']).center(110))
+
+    print("1. Preencher Currículo".center(90))
+    print("2. Listar Currículos".center(90))
+    print("3. Procurar Currículos".center(90))
+    print("4. Atualizar Currículos".center(90))
+    print("5. Gerar PDF do Currículo".center(90))
+    print("6. Sair".center(90))
 
 def opcoes():
-    opcao = input("Escolha uma opção: ")
-    while opcao not in ["1","2","3","4","5"]: opcao = input("Opção Invalida\nEscolha uma opção: ")
+    opcao = input(colored(">> ", "light_red", attrs=['bold']))
+    while opcao not in ["1","2","3","4","5","6"]: opcao = input(colored("Invalid Input\n>> ", "red", attrs=['bold']))
     return opcao
 
 #endregion
@@ -241,63 +370,68 @@ def main():
     vCurriculos = load("curriculos.json")
 
     while True:
-        print("\n")
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         menu()
-        print("=" * 30)
         opcao = opcoes()
 
-        if opcao == "1":
-            print("\n  -=-Cadastro de Curriculo-=-")
-            print("=" * 30)
-            nome = validar_nome(vCurriculos)
-            preencher_curriculo(vCurriculos, nome)
-            print("=" * 30)
+        match opcao:
+            case "1":
+                    
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print(colored("Preencimento de Curriculo - Dados Pessoais", "magenta", attrs=['bold']).center(90))
+                nome = validar_nome(vCurriculos)
+                preencher_curriculo(vCurriculos, nome)
 
-            continue
 
-        if opcao == "2":
-            print("\n  -=-Lista de Currículos-=-")
-            print("=" * 30)
-            listar_curriculos(vCurriculos)
-            print("=" * 30)
 
-            continue
+            case "2":
+                
+                print(colored("Lista de Currículos", "magenta", attrs=['bold']).center(90))
+                print("\n")
+                listar_curriculos(vCurriculos)
+ 
 
-        if opcao == "3":
-            print("\n  -=-Procurar Currículo-=-")
-            print("=" * 30)
-            nome = validar_nome_busca()
-            codigo = procurar_curriculo(vCurriculos,nome)
-            if codigo != -1:
-                print(f"Nome: {vCurriculos[codigo]['nome']}")
-                print(f"Email: {vCurriculos[codigo]['email']}")
-                print(f"Telefone: {vCurriculos[codigo]['telefone']}")
-            else:
-                print("Currículo não encontrado.")
-            print("=" * 30)
+            case "3":
+                print(colored("Procurar Currículo", "magenta", attrs=['bold']).center(90))
+                print("\n")
+                nome = validar_nome_busca()
+                codigo = procurar_curriculo(vCurriculos,nome)
+                if codigo != -1:
+                    print(colored(f"Nome:", "light_red", attrs=['bold']), colored(f"{vCurriculos[codigo]['nome']}", "cyan", attrs=['bold']))
+                    print(colored(f"Email:", "light_red", attrs=['bold']), colored(f"{vCurriculos[codigo]['email']}", "cyan", attrs=['bold']))
+                    print(colored(f"Telefone:", "light_red", attrs=['bold']), colored(f"{vCurriculos[codigo]['telefone']}", "cyan", attrs=['bold']))
+                else:
+                    print(colored("Currículo não encontrado.", "red"))
 
-            op = input("Deseja Gerar um PDF do Curriculo? (S/N)")
-            while op.upper() != "S" and op.upper() != "N": op = input("Deseja Gerar um PDF do Curriculo? (S/N)")
 
-            if op.upper() == "S":
-                curriculo_pdf(vCurriculos,nome)
-            else:
-                print("Voltando ao menu...")
-                time.sleep(1)
+                op = input("Deseja Gerar um PDF do Curriculo? (S/N)")
+                while op.upper() != "S" and op.upper() != "N": op = input(colored("Deseja Gerar um PDF do Curriculo? (S/N)", "yellow"))
 
-            continue
+                if op.upper() == "S":
+                    curriculo_pdf(vCurriculos,nome)
+                else:
+                    print(colored("Voltando ao menu...", "yellow"))
 
-        if opcao == "4":
-            print("\n  -=-Atualizar Currículo-=-")
-            print("=" * 30)
-            nome = validar_nome_busca()
-            atualizar_curriculo(vCurriculos,nome)
-            print("=" * 30)
+            case "4":
+                print(colored("Atualizar Currículo", "magenta", attrs=['bold']).center(90))
+                print("=" * 30)
+                nome = validar_nome_busca()
+                atualizar_curriculo(vCurriculos,nome)
 
-            continue
+            case "5":
+                print(colored("Gerar PDF do Currículo", "magenta", attrs=['bold']).center(90))
 
-        if opcao == "5":
-            print("Saindo do programa...")
-            break
+                nome = validar_nome_busca()
+                codigo = procurar_curriculo(vCurriculos,nome)
+
+                if codigo != -1:
+                    curriculo_pdf(vCurriculos,nome)
+                else:
+                    print(colored("Currículo não encontrado.", "red"))
+
+            case "6":
+                print(colored("Saindo do programa...", "yellow"))
+                break
 
 main()
