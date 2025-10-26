@@ -1,4 +1,4 @@
-<h1 align="center">🧾 Curriculo Generator</h1>
+<h1 align="center"> <img src= "./img/Logo.png"></h1>
 
 <p align="center">
   <b>Aplicação em Python para criar, editar e exportar currículos em PDF.</b><br>
